@@ -3,8 +3,9 @@ import '../constants.dart';
 
 
 class IconContent extends StatelessWidget {
-  IconContent({required this.icon, required this.label});
+  IconContent({required this.icon, required this.label, required this.color});
 
+  final Color color;
   final IconData icon;
   final String label;
 
@@ -16,6 +17,7 @@ class IconContent extends StatelessWidget {
         Icon(
           icon,
           size: 80.0,
+          color: color,
         ),
         SizedBox(
           height: 15.0,

@@ -19,10 +19,69 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  Gender selectedGander = Gender.male;
-  int height = 180;
+  Gender selectedGender = Gender.male;
+  int height = 120;
   int weight = 60;
   int age = 20;
+
+  int calculate(int a, int b) {
+    int result = a + b;
+    return result;
+  }
+
+  Color getBtnColor(Gender selectedGender, Gender btn) {
+    if (selectedGender == btn) {
+      return kClickCardColor;
+    } else {
+      return kInactiveCardColour;
+    }
+    // if (btn == Gender.female) {
+    //   if (selectedGender == Gender.female) {
+    //     return kClickCardColor;
+    //   } else {
+    //     return kInactiveCardColour;
+    //   }
+    // } else {
+    //   if (selectedGender == Gender.male) {
+    //     return kClickCardColor;
+    //   } else {
+    //     return kInactiveCardColour;
+    //   }
+    // }
+  }
+
+  String getBtnLabel(Gender selectedGender, Gender btn) {
+    if (btn == Gender.male) {
+      if (selectedGender == Gender.male) {
+        return 'male';
+      } else {
+        return 'MALE';
+      }
+    } else {
+      //female
+      if (selectedGender == Gender.female) {
+        return 'female';
+      } else {
+        return 'FEMALE';
+      }
+    }
+  }
+
+  String getFemaleIconLabel(Gender selectedGender) {
+    if (selectedGender == Gender.female) {
+      return 'female';
+    } else {
+      return 'FEMALE';
+    }
+  }
+
+  Color getFemaleIconColor(Gender selectedGender) {
+    if (selectedGender == Gender.female) {
+      return Colors.black;
+    } else {
+      return Colors.white;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +103,19 @@ class _InputPageState extends State<InputPage> {
                 child: ReusableCard(
                   onPress: () {
                     setState(() {
-                      selectedGander = Gender.male;
+                      selectedGender = Gender.male;
                     });
                   },
-                  colour: selectedGander == Gender.male
-                      ? kActiveCardColour
-                      : kInactiveCardColour,
+                  colour: getBtnColor(selectedGender, Gender.male),
+                  // colour: selectedGender == Gender.male
+                  //     ? kClickCardColor
+                  //     : kInactiveCardColour,
                   cardChild: IconContent(
                     icon: FontAwesomeIcons.mars,
-                    label: 'MALE',
+                    label: getBtnLabel(selectedGender, Gender.male),
+                    color: selectedGender == Gender.male
+                        ? Colors.black
+                        : Colors.white,
                   ),
                 ),
               ),
@@ -60,15 +123,14 @@ class _InputPageState extends State<InputPage> {
                 child: ReusableCard(
                   onPress: () {
                     setState(() {
-                      selectedGander = Gender.female;
+                      selectedGender = Gender.female;
                     });
                   },
-                  colour: selectedGander == Gender.female
-                      ? kActiveCardColour
-                      : kInactiveCardColour,
+                  colour: getBtnColor(selectedGender, Gender.female),
                   cardChild: IconContent(
                     icon: FontAwesomeIcons.venus,
-                    label: 'FEMALE',
+                    color: getFemaleIconColor(selectedGender),
+                    label: getBtnLabel(selectedGender, Gender.female),
                   ),
                 ),
               ),
@@ -113,7 +175,7 @@ class _InputPageState extends State<InputPage> {
                     ),
                     child: Slider(
                       value: height.toDouble(),
-                      min: 120.0,
+                      min: 70.0,
                       max: 220.0,
                       onChanged: (double newValue) {
                         setState(() {
@@ -151,7 +213,9 @@ class _InputPageState extends State<InputPage> {
                                 icon: FontAwesomeIcons.minus,
                                 onPressed: () {
                                   setState(() {
-                                    weight--;
+                                    if (weight > 5) {
+                                      weight--;
+                                    }
                                   });
                                 }),
                             SizedBox(
@@ -194,7 +258,9 @@ class _InputPageState extends State<InputPage> {
                               onPressed: () {
                                 setState(
                                   () {
-                                    age--;
+                                    if (age > 1) {
+                                      age--;
+                                    }
                                   },
                                 );
                               },
@@ -205,7 +271,9 @@ class _InputPageState extends State<InputPage> {
                             RoundIconButton(
                               icon: FontAwesomeIcons.plus,
                               onPressed: () {
-                                age++;
+                                setState(() {
+                                  age++;
+                                });
                               },
                             ),
                           ],
@@ -217,24 +285,43 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          BottomButton(
-            buttonTitle: 'CALCULATE',
-            onTap: () {
-              CalculatorBrain calc = CalculatorBrain(height: height, weight: weight);
-
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ResultsPage(
-                    bmiResult: calc.calculateBMI(),
-                    resultText: calc.getResult(),
-                    interpretation: calc.getInterprepation(),
-                  ),),);
-            },
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: BottomButton(
+                  buttonTitle: 'CALCULATE',
+                  onTap: () {
+                    CalculatorBrain calc =
+                        CalculatorBrain(height: height, weight: weight);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultsPage(
+                          bmiResult: calc.calculateBMI(),
+                          resultText: calc.getResult(),
+                          interpretation: calc.getInterprepation(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: BottomButton(
+                  buttonTitle: 'RESET',
+                  onTap: () {
+                    setState(() {
+                      height = 120;
+                      weight = 60;
+                      age = 20;
+                    });
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 }
-
-
-
