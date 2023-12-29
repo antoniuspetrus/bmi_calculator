@@ -289,6 +289,7 @@ class _InputPageState extends State<InputPage> {
             children: <Widget>[
               Expanded(
                 child: BottomButton(
+                  color: Color(0xFFEB1555),
                   buttonTitle: 'CALCULATE',
                   onTap: () {
                     CalculatorBrain calc =
@@ -308,12 +309,13 @@ class _InputPageState extends State<InputPage> {
               ),
               Expanded(
                 child: BottomButton(
+                  color: Color(0xFF696969),
                   buttonTitle: 'RESET',
                   onTap: () {
                     setState(() {
-                      height = 120;
-                      weight = 60;
-                      age = 20;
+                       height = 120;
+                       weight = 60;
+                       age = 20;
                     });
                   },
                 ),

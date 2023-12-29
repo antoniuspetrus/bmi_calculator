@@ -60,6 +60,7 @@ class ResultsPage extends StatelessWidget {
             ),
           ),
           BottomButton(
+            color: Color(0xFFEB1555),
             buttonTitle: 'RE-CALCULATE',
             onTap: () {
               Navigator.pop(context);
